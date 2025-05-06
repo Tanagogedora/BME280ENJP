@@ -105,7 +105,9 @@ namespace BME280 {
         //% block="Integer/整数"
             Rint=1,
         //% block="1 demicl place / 小数第1位"
-            RPt=10
+            RPt=10,
+        //% block=”2 demicl place /　小数第２位"
+            RPd=100
     }
         
     /**
