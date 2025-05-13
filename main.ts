@@ -291,7 +291,7 @@ namespace BME280 {
      * 気温・気圧・湿度の算出
      * Reads raw data from the sensor and calculates
      * corrected temperature , pressure and humidity.
-     * Calculated to two decimal places
+     * Calculated to  2 decimal place
      * センサーから生データを読み取り、
      * 補正済みの気温・気圧・湿度を算出。
      * 小数第二位まで算出
@@ -373,7 +373,7 @@ namespace BME280 {
      *  Get pressure value from BME280 sensor/BME280 センサーから気圧を取得
      *   
      *  @param u Pressure unit (Pa or hPa) / 気圧の単位（Pa または hPa）
-     *  @returns Pressure value(Integer or decimal place) / 気圧の値（整数または小数第1位）         
+     *  @returns Pressure value(Integer or  2 decimal place) / 気圧の値（整数または小数第2位）         
      */
     //% blockId="BME280_GET_PRESSURE"
     //% block="Pressuer / 気圧 %Pu　Precision / 精度 %Prd"
@@ -386,7 +386,7 @@ namespace BME280 {
     /**
      * Get temperature value from BME280 sensor/ BME280 センサーから気温を取得
      * @param u Temperature unit (C or F) / 温度の単位（C または F）
-     * @returns Temperature value.(Integer or decimal place) / 気温の値（整数または小数第1位）
+     * @returns Temperature value.(Integer or  2 decimal place) / 気温の値（整数または小数第2位）
      */
     //% blockId="BME280_GET_TEMPERATURE"
     //% block="Tempratuere /気温 %Tu Precision / 精度 %Trd"
@@ -405,7 +405,7 @@ namespace BME280 {
      * Get humidity value from BME280 sensor / BME280 センサーから湿度を取得
      *
      * @param u Humidity unit % / 湿度の単位 %
-     * @returns Humidity value.(Integer or decimal place) / 湿度の値（整数または小数第1位）
+     * @returns Humidity value.(Integer or  2 decimal place) / 湿度の値（整数または小数第２位）
      */
     //% blockId="BME280_GET_HUMIDITY"
     //% block="Humidity / 湿度 Precision / 精度 %Hrd"
@@ -455,9 +455,11 @@ namespace BME280 {
         // Unification of units /単位の統一
         // If the unit of the pressure P0 at the reference point is Pa, multiply P0 by 1. 
         // If the unit is hPa, multiply P0 by 100.
-        // 基準点の気圧P0の単位がPaならそのまま、hPaなら1/100
         // uP1:P->1 hPa->1/100
+        // 基準点の気圧P0の単位がPaなら現地気圧Eprsはそのまま、hPaなら1/100
+        //  2 decimal place/小数第２位まで
         Eprs = Eprs *1/uP1 
+        Eprs=Rnber(Eprs,100)
 
         // Calculate Elevation difference / 標高差計算
         // 0.0065-> Tropospheric temperature lapse rate (0.65℃/100m) 
@@ -474,6 +476,7 @@ namespace BME280 {
     /**
      * Calculate Saturated Vapor Pressure,
      * 飽和水蒸気圧
+     * Integer or  2 decimal place / 整数または小数第2位
      */
     //% block="Saturated Vapor Pressure（飽和水蒸気圧）Temp/温度 %Ctemp Precision/精度 %SPdtp"
     //% weight=60 blockGap=10
@@ -488,6 +491,7 @@ namespace BME280 {
     /**
      * Calculate Saturated Vapor Amount,
      * 飽和水蒸気量計算
+     * Integer or  2 decimal place / 整数または小数第2位
      */
     //% block="Saturated Vapor Amount（飽和水蒸気量） Temp/温度 %Ctemp Precision/精度 %Sadtp"
     //% weight=60 blockGap=10
@@ -502,6 +506,7 @@ namespace BME280 {
      * Calculate Dew point
      * Dew Point:Improved Magnus formula / 露点：改良マグヌス式
      * 露点
+     * 1 decimal place / 小数第1位
      */
     //% block="Dew Point/露点　Temp/温度 %Dtemp Humidity / 湿度　%RH　Precision/精度 %dtprec"
     //% weight=60 blockGap=10
@@ -512,7 +517,7 @@ namespace BME280 {
         let db = 243.12;
         let alpha = Math.log(RH / 100) + (da * Dtemp) / (db + Dtemp);
         let DPoint = (db * alpha) / (da - alpha);
-        DPoint = Rnber(DPoint, 100);
+        DPoint = Rnber(DPoint, 10);
         return DPoint        
     }
      /**
